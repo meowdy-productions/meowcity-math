@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'games/meowcity/**'
-  workflow_dispatch:  # Manual trigger button in GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -30,13 +30,29 @@ jobs:
           pip install -e .
 
       - name: Run simulations
+        working-directory: games/meowcity
         run: |
-          source env/bin/activate
-          python games/meowcity/run.py
+          source ../../env/bin/activate
+          python run.py
+
+      - name: Find output files
+        run: |
+          echo "=== All .zst files ==="
+          find . -name "*.zst" 2>/dev/null
+          echo "=== All index.json ==="
+          find . -name "index.json" -path "*publish*" 2>/dev/null
+          echo "=== All lookUpTable files ==="
+          find . -name "lookUpTable_*" 2>/dev/null
+          echo "=== All publish_files dirs ==="
+          find . -name "publish_files" -type d 2>/dev/null
 
       - name: Upload Math Files
         uses: actions/upload-artifact@v4
         with:
           name: meowcity-math
-          path: games/meowcity/library/publish_files/
+          path: |
+            **/publish_files/index.json
+            **/publish_files/*.jsonl.zst
+            **/publish_files/lookUpTable_*.csv
+          if-no-files-found: warn
           retention-days: 30
