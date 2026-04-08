@@ -2,7 +2,7 @@
 
 Clone Repository
 
-Edit Files
+Edit Files in /games/meowcity
 
 Push changes 
 
