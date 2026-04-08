@@ -1,0 +1,42 @@
+name: Build MeowCity Math
+
+on:
+  push:
+    paths:
+      - 'games/meowcity/**'
+  workflow_dispatch:  # Manual trigger button in GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install SDK dependencies
+        run: |
+          python -m venv env
+          source env/bin/activate
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Run simulations
+        run: |
+          source env/bin/activate
+          python games/meowcity/run.py
+
+      - name: Upload Math Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: meowcity-math
+          path: games/meowcity/library/publish_files/
+          retention-days: 30
