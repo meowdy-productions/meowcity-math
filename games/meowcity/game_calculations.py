@@ -37,12 +37,12 @@ def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_fr
     """
     Evaluate a single payline for the best winning combination (left to right).
     Wild substitutes for all symbols except Scatter.
-    In freegame, wilds carry multipliers that are additive.
+    In freegame, wilds carry multipliers that stack multiplicatively.
     """
     # Determine the paying symbol (first non-wild from left)
     pay_symbol = None
     kind = 0
-    wild_multiplier_sum = 0
+    wild_multiplier_product = 1
     winning_positions = []
 
     for i in range(config.num_reels):
@@ -56,7 +56,7 @@ def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_fr
             winning_positions.append(line_positions[i])
             if is_freegame:
                 m = random.choice(config.wild_multipliers_free)
-                wild_multiplier_sum += (m - 1)  # additive contribution
+                wild_multiplier_product *= m  # multiplicative stacking
         elif pay_symbol is None:
             pay_symbol = sym
             kind += 1
@@ -86,10 +86,8 @@ def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_fr
 
     base_win = pay_entry[kind_index]
 
-    # Apply wild multiplier in freegame
-    multiplier = 1
-    if is_freegame and wild_multiplier_sum > 0:
-        multiplier = 1 + wild_multiplier_sum
+    # Apply multiplicative wild multiplier in freegame
+    multiplier = wild_multiplier_product if is_freegame else 1
 
     total_win = base_win * multiplier
 

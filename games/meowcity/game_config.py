@@ -32,16 +32,16 @@ SCATTER_SYMBOL = "SC"
 
 PAYTABLE = {
     #          3-Kind  4-Kind  5-Kind
-    "WD":   [  75,     200,    1000  ],
-    "H1":   [  50,     100,    500   ],
-    "H2":   [  30,     75,     300   ],
-    "H3":   [  20,     50,     200   ],
-    "H4":   [  15,     40,     150   ],
-    "H5":   [  10,     25,     100   ],
-    "L1":   [  5,      15,     50    ],
-    "L2":   [  5,      10,     40    ],
-    "L3":   [  5,      10,     30    ],
-    "L4":   [  2,      5,      20    ],
+    "WD":   [  100,    400,    2000  ],
+    "H1":   [  75,     200,    1000  ],
+    "H2":   [  40,     100,    500   ],
+    "H3":   [  25,     75,     300   ],
+    "H4":   [  20,     50,     200   ],
+    "H5":   [  15,     35,     150   ],
+    "L1":   [  5,      15,     60    ],
+    "L2":   [  5,      12,     50    ],
+    "L3":   [  5,      10,     40    ],
+    "L4":   [  2,      5,      25    ],
 }
 
 # ============================================================================
@@ -119,25 +119,25 @@ REELS_BASE = [
 # ============================================================================
 
 REELS_FREE = [
-    # Reel 1 (28 stops) - no Scatter, no Wild
-    ["L4","H5","L2","L1","H4","L3","H3","L4","L2","H2","L1","H5","L3","L4",
+    # Reel 1 (28 stops) - Wild cluster at positions 5-7, no Scatter
+    ["L4","H5","L2","L1","H4","WD","WD","WD","L2","H2","L1","H5","L3","L4",
      "H1","L2","L1","H4","L3","H5","L4","L1","H3","L2","H2","L3","L4","L1"],
-    # Reel 2 (28 stops) - Wilds + Scatter
-    ["L1","WD","H4","L3","H5","L2","WD","L4","H3","L1","H2","L3","WD","L2",
+    # Reel 2 (28 stops) - Wild cluster at positions 0-2, singles at 6/12/20, Scatter
+    ["WD","WD","WD","L3","H5","L2","WD","L4","H3","L1","H2","L3","WD","L2",
      "H1","L4","SC","L1","H4","L3","WD","H5","L2","L4","H3","L1","L3","L2"],
-    # Reel 3 (28 stops) - Wilds + Scatter
-    ["H5","L2","WD","L1","H4","L3","H3","L4","WD","L2","H2","L1","WD","L3",
+    # Reel 3 (28 stops) - Wild cluster at positions 1-3, singles at 8/12/20, Scatter
+    ["H5","WD","WD","WD","H4","L3","H3","L4","WD","L2","H2","L1","WD","L3",
      "H1","L4","L2","SC","H5","L1","WD","L3","H4","L2","L4","H3","L1","L3"],
-    # Reel 4 (28 stops) - Wilds + Scatter
-    ["L3","WD","H5","L1","H4","L2","WD","L4","H3","L1","H2","L3","WD","L2",
+    # Reel 4 (28 stops) - Wild cluster at positions 0-2, singles at 6/12/20, Scatter
+    ["WD","WD","WD","L1","H4","L2","WD","L4","H3","L1","H2","L3","WD","L2",
      "H1","L4","L1","SC","H4","L3","WD","H5","L2","L4","H3","L1","L3","L2"],
-    # Reel 5 (28 stops) - Wilds, no Scatter
-    ["L2","WD","H4","L1","H5","L3","WD","L4","H3","L2","H2","L1","WD","L3",
+    # Reel 5 (28 stops) - Wild cluster at positions 0-2, singles at 6/12/19, no Scatter
+    ["WD","WD","WD","L1","H5","L3","WD","L4","H3","L2","H2","L1","WD","L3",
      "H1","L4","L2","H4","L1","WD","H5","L3","L4","H3","L2","L1","L3","L4"],
 ]
 
-# Wild multipliers in freegame (randomly assigned)
-WILD_MULTIPLIERS_FREE = [2, 2, 2, 3, 3, 5]
+# Wild multipliers in freegame (applied multiplicatively per wild on a winning line)
+WILD_MULTIPLIERS_FREE = [2, 2, 3, 3, 5, 10]
 
 # ============================================================================
 # BET MODE CONFIGURATION
@@ -183,13 +183,13 @@ BET_MODES = {
     "buy_20": {
         "name": "buy_20",
         "cost": 100.0,
-        "description": "Buy 20 Free Spins + Starting 2x Multiplier (100x bet)",
+        "description": "Buy 20 Free Spins + Starting 5x Multiplier (100x bet)",
         "auto_close_disabled": False,
         "is_feature": False,
         "is_buybonus": True,
         "guaranteed_freespins": 20,
         "scatter_force": 5,
-        "starting_multiplier": 2,
+        "starting_multiplier": 5,
     },
 }
 
@@ -198,20 +198,20 @@ BET_MODES = {
 # ============================================================================
 
 REELS_BUYBUY = [
-    # Reel 1 (28 stops) - no Wild, no Scatter, boosted highs
-    ["H1","H5","L2","H2","H4","L3","H3","L4","H1","H2","L1","H5","L3","H3",
-     "H1","L2","H4","H2","L3","H5","H3","L1","H4","L2","H2","L3","H1","L1"],
-    # Reel 2 (28 stops) - Wilds + boosted
-    ["H1","WD","H4","H3","H5","L2","WD","H2","H3","L1","H2","H4","WD","L2",
+    # Reel 1 (28 stops) - Wild clusters at positions 4-6 and 17-19, boosted highs
+    ["H1","H5","L2","H2","WD","WD","WD","L4","H1","H2","L1","H5","L3","H3",
+     "H1","L2","H4","WD","WD","WD","H3","L1","H4","L2","H2","L3","H1","L1"],
+    # Reel 2 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/20, Scatter
+    ["WD","WD","WD","H3","H5","L2","WD","H2","H3","L1","H2","WD","WD","WD",
      "H1","L4","SC","H3","H4","L3","WD","H5","H2","L4","H3","H1","L3","H2"],
-    # Reel 3 (28 stops) - Wilds + boosted
-    ["H5","H2","WD","H1","H4","L3","H3","H2","WD","L2","H2","H1","WD","H3",
+    # Reel 3 (28 stops) - Wild clusters at positions 1-3 and 11-13, singles at 8/20, Scatter
+    ["H5","WD","WD","WD","H4","L3","H3","H2","WD","L2","H2","WD","WD","WD",
      "H1","L4","H2","SC","H5","H1","WD","H3","H4","H2","L4","H3","H1","L3"],
-    # Reel 4 (28 stops) - Wilds + boosted
-    ["H3","WD","H5","H1","H4","H2","WD","L4","H3","H1","H2","H4","WD","H2",
+    # Reel 4 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/20, Scatter
+    ["WD","WD","WD","H1","H4","H2","WD","L4","H3","H1","H2","WD","WD","WD",
      "H1","L4","H1","SC","H4","H3","WD","H5","H2","L4","H3","H1","H3","H2"],
-    # Reel 5 (28 stops) - Wilds, no Scatter, boosted
-    ["H2","WD","H4","H1","H5","H3","WD","L4","H3","H2","H2","H1","WD","H3",
+    # Reel 5 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/19, no Scatter
+    ["WD","WD","WD","H1","H5","H3","WD","L4","H3","H2","H2","WD","WD","WD",
      "H1","L4","H2","H4","H1","WD","H5","H3","L4","H3","H2","H1","H3","L4"],
 ]
 
