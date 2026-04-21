@@ -288,7 +288,7 @@ def execute_buybuy_freegame(config: GameConfig, total_spins, start_idx, global_m
             idx += 1
 
         # Evaluate line wins (freegame mode with wild multipliers)
-        wins = evaluate_line_wins(board, config, is_freegame=True)
+        wins = evaluate_line_wins(board, config, is_freegame=True, wild_multipliers=buy_wild_mults)
         spin_win = sum(w["win"] for w in wins)
 
         # Apply global multiplier

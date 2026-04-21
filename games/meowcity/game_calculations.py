@@ -7,12 +7,14 @@ import random
 from game_config import GameConfig
 
 
-def evaluate_line_wins(board, config: GameConfig, is_freegame=False):
+def evaluate_line_wins(board, config: GameConfig, is_freegame=False, wild_multipliers=None):
     """
     Evaluate all 20 paylines for winning combinations.
+    wild_multipliers: optional list of multipliers to use; defaults to config's wild_multipliers_free
     Returns list of win dicts: {symbol, kind, win, positions, multiplier, meta}
     """
     wins = []
+    mults = wild_multipliers if wild_multipliers is not None else config.wild_multipliers_free
 
     for line_idx, payline in enumerate(config.paylines):
         # Get symbols on this payline
@@ -25,7 +27,7 @@ def evaluate_line_wins(board, config: GameConfig, is_freegame=False):
             line_positions.append({"reel": reel, "row": row})
 
         # Evaluate left-to-right
-        win_info = evaluate_single_line(line_symbols, line_positions, config, is_freegame)
+        win_info = evaluate_single_line(line_symbols, line_positions, config, is_freegame, mults)
         if win_info:
             win_info["lineIndex"] = line_idx
             wins.append(win_info)
@@ -33,12 +35,15 @@ def evaluate_line_wins(board, config: GameConfig, is_freegame=False):
     return wins
 
 
-def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_freegame=False):
+def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_freegame=False, wild_multipliers=None):
     """
     Evaluate a single payline for the best winning combination (left to right).
     Wild substitutes for all symbols except Scatter.
     In freegame, wilds carry multipliers that stack multiplicatively.
+    wild_multipliers: optional list of multipliers; defaults to config's wild_multipliers_free
     """
+    mults = wild_multipliers if wild_multipliers is not None else config.wild_multipliers_free
+
     # Determine the paying symbol (first non-wild from left)
     pay_symbol = None
     kind = 0
@@ -55,7 +60,7 @@ def evaluate_single_line(line_symbols, line_positions, config: GameConfig, is_fr
             kind += 1
             winning_positions.append(line_positions[i])
             if is_freegame:
-                m = random.choice(config.wild_multipliers_free)
+                m = random.choice(mults)
                 wild_multiplier_product *= m  # multiplicative stacking
         elif pay_symbol is None:
             pay_symbol = sym

@@ -183,43 +183,41 @@ BET_MODES = {
     "buy_20": {
         "name": "buy_20",
         "cost": 100.0,
-        "description": "Buy 20 Free Spins + Starting 2x Multiplier (100x bet)",
+        "description": "Buy 20 Free Spins (100x bet)",
         "auto_close_disabled": False,
         "is_feature": False,
         "is_buybonus": True,
         "guaranteed_freespins": 20,
         "scatter_force": 5,
-        "starting_multiplier": 2,
     },
 }
 
 # ============================================================================
-# BONUS BUY REELS (moderately boosted vs free reels — one wild cluster per reel)
-# Wild density ~17% (down from 27%), H:L ratio ~0.85 (down from 1.44).
-# Rebalanced so raw RTP stays in optimizer range after the 5000x win cap.
+# BONUS BUY REELS (BASE-like symbol distribution with modest wild boost)
+# Wild density ~7% (matched to BASE ~6%), H:L ratio ~0.7 (matched to BASE).
+# Modest scatter/wild placement for predictable play with RTP ~96.5% after optimization.
 # ============================================================================
 
 REELS_BUYBUY = [
-    # Reel 1 (28 stops) - Wild cluster at positions 4-6, single at 17, no Scatter
-    ["H1","L2","L3","H5","WD","WD","WD","L4","H2","L1","H3","L2","H4","L3",
-     "H5","L1","H1","WD","L4","H3","L2","H4","L1","H2","L3","H1","L4","L1"],
-    # Reel 2 (28 stops) - Wild cluster at positions 0-2, singles at 6/20, Scatter at 16
-    ["WD","WD","WD","H3","L2","H5","WD","L3","H2","L1","H1","L4","H3","L2",
-     "H4","L3","SC","H5","L1","H1","WD","L2","H2","L4","H4","L1","H3","L3"],
-    # Reel 3 (28 stops) - Wild cluster at positions 1-3, singles at 8/20, Scatter at 17
-    ["H5","WD","WD","WD","H4","L3","H3","L4","WD","L2","H2","L1","H3","L2",
-     "H1","L4","H4","SC","H5","L3","WD","H2","L1","H3","L2","H1","L4","L3"],
-    # Reel 4 (28 stops) - Wild cluster at positions 0-2, singles at 6/20, Scatter at 17
-    ["WD","WD","WD","H1","L2","H4","WD","L4","H3","L1","H2","L3","H5","L2",
-     "H1","L4","H4","SC","H3","L1","WD","H5","L3","H2","L4","H3","L2","L1"],
-    # Reel 5 (28 stops) - Wild cluster at positions 0-2, singles at 6/19, no Scatter
-    ["WD","WD","WD","H1","L2","H5","WD","L4","H3","L2","H2","L1","H4","L3",
-     "H1","L4","H5","L2","H3","WD","L1","H4","L3","H2","L4","H1","L3","L1"],
+    # Reel 1 (28 stops) - Wild at positions 6 and 17, no Scatter
+    ["H1","L2","L3","H5","L4","L1","WD","H2","L1","H3","L2","H4","L3","H5",
+     "L1","L2","WD","H1","L4","H3","L2","H4","L1","H2","L3","H1","L4","L1"],
+    # Reel 2 (28 stops) - Wild at positions 5 and 18, Scatter at 16
+    ["L1","H4","L3","H2","L2","WD","L4","H3","L1","L2","H5","L4","L2","H1",
+     "L3","H5","SC","L1","WD","H4","L2","L4","H2","H3","L1","L3","H1","L2"],
+    # Reel 3 (28 stops) - Wild at positions 6 and 20, Scatter at 15
+    ["H5","L2","L4","H3","L1","L3","WD","L4","H4","L2","H2","L1","L3","H5",
+     "L4","SC","H1","L1","L3","L2","WD","H4","L1","L4","H3","L3","L2","H1"],
+    # Reel 4 (28 stops) - Wild at positions 5 and 19, Scatter at 14
+    ["L3","H5","L1","L4","H4","WD","L2","L3","H3","L1","L4","H2","L2","SC",
+     "H5","L4","L1","H1","L2","WD","H4","L3","L1","H3","L2","H5","L4","L1"],
+    # Reel 5 (28 stops) - Wild at positions 5 and 18, no Scatter
+    ["L2","H4","L4","L1","H5","WD","L3","L4","H3","L2","L1","H2","L4","L3",
+     "H5","L2","L1","WD","H1","L4","L3","H4","L2","L4","L1","H3","L3","L4"],
 ]
 
-# Wild multipliers for bonus-buy freegame (lower ceiling than triggered free game
-# so the 5000x cap is the binding constraint rather than multiplier explosion).
-WILD_MULTIPLIERS_BUYBUY = [2, 2, 2, 3, 3, 5]
+# Wild multipliers for bonus-buy freegame (conservative: avg 2.4x to keep wins moderate)
+WILD_MULTIPLIERS_BUYBUY = [2, 2, 2, 2, 3, 3]
 
 # ============================================================================
 # GAME PARAMETERS
