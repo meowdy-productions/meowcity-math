@@ -44,7 +44,8 @@ class GameState:
         for event in events:
             self.book.add_event(event)
 
-        self.book.set_payout(total_win)
+        max_payout = self.config.max_win_multiplier * 100
+        self.book.set_payout(min(total_win, max_payout))
         self.book.base_game_wins = base_wins / 100.0 if base_wins else 0.0
         self.book.free_game_wins = free_wins / 100.0 if free_wins else 0.0
 
@@ -100,7 +101,9 @@ class GameState:
         for event in events:
             self.book.add_event(event)
 
-        self.book.set_payout(total_win)
+        max_payout = self.config.max_win_multiplier * 100
+        capped_win = min(total_win, max_payout)
+        self.book.set_payout(capped_win)
         self.book.base_game_wins = 0.0
         self.book.free_game_wins = free_wins / 100.0 if free_wins else 0.0
 

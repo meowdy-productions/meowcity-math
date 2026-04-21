@@ -254,6 +254,10 @@ def execute_buybuy_freegame(config: GameConfig, total_spins, start_idx, global_m
     current_spin = 0
     remaining_spins = total_spins
     current_global_mult = global_mult
+    max_payout = config.max_win_multiplier * 100
+
+    # Use buy-mode specific multipliers (lower ceiling than triggered free game)
+    buy_wild_mults = getattr(config, 'wild_multipliers_buybuy', config.wild_multipliers_free)
 
     while current_spin < remaining_spins:
         current_spin += 1
@@ -274,7 +278,7 @@ def execute_buybuy_freegame(config: GameConfig, total_spins, start_idx, global_m
         if wild_positions:
             wilds_with_mult = []
             for wp in wild_positions:
-                m = random.choice(config.wild_multipliers_free)
+                m = random.choice(buy_wild_mults)
                 wilds_with_mult.append({
                     "reel": wp["reel"],
                     "row": wp["row"],
@@ -298,7 +302,11 @@ def execute_buybuy_freegame(config: GameConfig, total_spins, start_idx, global_m
             events.append(win_info_event(idx, spin_win, wins))
             idx += 1
 
+        # Hard cap: stop accumulating once the round max win is reached
+        remaining_cap = max(0, max_payout - cumulative_win)
+        spin_win = min(spin_win, remaining_cap)
         cumulative_win += spin_win
+
         win_level = get_win_level(spin_win, config)
         events.append(set_win_event(idx, spin_win, win_level))
         idx += 1

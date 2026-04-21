@@ -183,37 +183,43 @@ BET_MODES = {
     "buy_20": {
         "name": "buy_20",
         "cost": 100.0,
-        "description": "Buy 20 Free Spins + Starting 5x Multiplier (100x bet)",
+        "description": "Buy 20 Free Spins + Starting 2x Multiplier (100x bet)",
         "auto_close_disabled": False,
         "is_feature": False,
         "is_buybonus": True,
         "guaranteed_freespins": 20,
         "scatter_force": 5,
-        "starting_multiplier": 5,
+        "starting_multiplier": 2,
     },
 }
 
 # ============================================================================
-# BONUS BUY REELS (higher value symbol frequency for purchased bonus)
+# BONUS BUY REELS (moderately boosted vs free reels — one wild cluster per reel)
+# Wild density ~17% (down from 27%), H:L ratio ~0.85 (down from 1.44).
+# Rebalanced so raw RTP stays in optimizer range after the 5000x win cap.
 # ============================================================================
 
 REELS_BUYBUY = [
-    # Reel 1 (28 stops) - Wild clusters at positions 4-6 and 17-19, boosted highs
-    ["H1","H5","L2","H2","WD","WD","WD","L4","H1","H2","L1","H5","L3","H3",
-     "H1","L2","H4","WD","WD","WD","H3","L1","H4","L2","H2","L3","H1","L1"],
-    # Reel 2 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/20, Scatter
-    ["WD","WD","WD","H3","H5","L2","WD","H2","H3","L1","H2","WD","WD","WD",
-     "H1","L4","SC","H3","H4","L3","WD","H5","H2","L4","H3","H1","L3","H2"],
-    # Reel 3 (28 stops) - Wild clusters at positions 1-3 and 11-13, singles at 8/20, Scatter
-    ["H5","WD","WD","WD","H4","L3","H3","H2","WD","L2","H2","WD","WD","WD",
-     "H1","L4","H2","SC","H5","H1","WD","H3","H4","H2","L4","H3","H1","L3"],
-    # Reel 4 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/20, Scatter
-    ["WD","WD","WD","H1","H4","H2","WD","L4","H3","H1","H2","WD","WD","WD",
-     "H1","L4","H1","SC","H4","H3","WD","H5","H2","L4","H3","H1","H3","H2"],
-    # Reel 5 (28 stops) - Wild clusters at positions 0-2 and 11-13, singles at 6/19, no Scatter
-    ["WD","WD","WD","H1","H5","H3","WD","L4","H3","H2","H2","WD","WD","WD",
-     "H1","L4","H2","H4","H1","WD","H5","H3","L4","H3","H2","H1","H3","L4"],
+    # Reel 1 (28 stops) - Wild cluster at positions 4-6, single at 17, no Scatter
+    ["H1","L2","L3","H5","WD","WD","WD","L4","H2","L1","H3","L2","H4","L3",
+     "H5","L1","H1","WD","L4","H3","L2","H4","L1","H2","L3","H1","L4","L1"],
+    # Reel 2 (28 stops) - Wild cluster at positions 0-2, singles at 6/20, Scatter at 16
+    ["WD","WD","WD","H3","L2","H5","WD","L3","H2","L1","H1","L4","H3","L2",
+     "H4","L3","SC","H5","L1","H1","WD","L2","H2","L4","H4","L1","H3","L3"],
+    # Reel 3 (28 stops) - Wild cluster at positions 1-3, singles at 8/20, Scatter at 17
+    ["H5","WD","WD","WD","H4","L3","H3","L4","WD","L2","H2","L1","H3","L2",
+     "H1","L4","H4","SC","H5","L3","WD","H2","L1","H3","L2","H1","L4","L3"],
+    # Reel 4 (28 stops) - Wild cluster at positions 0-2, singles at 6/20, Scatter at 17
+    ["WD","WD","WD","H1","L2","H4","WD","L4","H3","L1","H2","L3","H5","L2",
+     "H1","L4","H4","SC","H3","L1","WD","H5","L3","H2","L4","H3","L2","L1"],
+    # Reel 5 (28 stops) - Wild cluster at positions 0-2, singles at 6/19, no Scatter
+    ["WD","WD","WD","H1","L2","H5","WD","L4","H3","L2","H2","L1","H4","L3",
+     "H1","L4","H5","L2","H3","WD","L1","H4","L3","H2","L4","H1","L3","L1"],
 ]
+
+# Wild multipliers for bonus-buy freegame (lower ceiling than triggered free game
+# so the 5000x cap is the binding constraint rather than multiplier explosion).
+WILD_MULTIPLIERS_BUYBUY = [2, 2, 2, 3, 3, 5]
 
 # ============================================================================
 # GAME PARAMETERS
@@ -259,6 +265,7 @@ class GameConfig:
         self.scatter_freespins = SCATTER_FREESPINS
         self.scatter_retrigger = SCATTER_RETRIGGER
         self.wild_multipliers_free = WILD_MULTIPLIERS_FREE
+        self.wild_multipliers_buybuy = WILD_MULTIPLIERS_BUYBUY
         self.bet_modes = BET_MODES
         self.target_rtp = TARGET_RTP
         self.max_win_multiplier = MAX_WIN_MULTIPLIER
